@@ -1,0 +1,10 @@
+<div class="card" *ngIf="hasToken; else noAccess">
+  <h2>Ingreso</h2>
+  <p>Bienvenido, tienes acceso.</p>
+</div>
+<ng-template #noAccess>
+  <div class="card">
+    <h2>Acceso denegado</h2>
+    <p>No tienes un token válido. Por favor, inicia sesión.</p>
+  </div>
+</ng-template>
