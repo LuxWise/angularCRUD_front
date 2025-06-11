@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../api.service';
-import { Router } from '@angular/router'; // <-- Importa Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form',
@@ -14,15 +14,14 @@ export class FormComponent {
   username = '';
   password = '';
 
-  constructor(private api: ApiService, private router: Router) {} // <-- Inyecta Router
+  constructor(private api: ApiService, private router: Router) {}
 
   onLogin() {
     this.api.login(this.username, this.password).subscribe({
       next: (response) => {
-        console.log(response);
-        if (response.token) {
-          document.cookie = `token=${response.token}; path=/; max-age=3600`;
-          this.router.navigate(['/private']); // <-- Redirige a /private
+        if (response.accessToken) {
+          document.cookie = `token=${response.accessToken}; path=/; max-age=3600`;
+          this.router.navigate(['/private']);
         }
       },
       error: (err) => {

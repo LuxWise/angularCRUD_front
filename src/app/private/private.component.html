@@ -1,7 +1,57 @@
-<div class="card" *ngIf="hasToken; else noAccess">
-  <h2>Ingreso</h2>
-  <p>Bienvenido, tienes acceso.</p>
+<div *ngIf="hasToken; else noAccess">
+  <div class="card">
+    <form [formGroup]="todoForm" (ngSubmit)="submit()">
+      <input formControlName="todoName" placeholder="Título" required />
+      <textarea
+        formControlName="description"
+        placeholder="Descripción"
+      ></textarea>
+
+      <label>
+        <input type="checkbox" formControlName="visible" /> Visible
+      </label>
+
+      <input type="datetime-local" formControlName="dueDate" required />
+
+      <select formControlName="priority" required>
+        <option value="">Selecciona prioridad</option>
+        <option value="LOW">Baja</option>
+        <option value="MEDIUM">Media</option>
+        <option value="HIGH">Alta</option>
+      </select>
+
+      <button type="submit">{{ editing ? "Actualizar" : "Agregar" }}</button>
+      <button type="button" *ngIf="editing" (click)="cancel()">Cancelar</button>
+    </form>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Visible</th>
+        <th>Vence</th>
+        <th>Prioridad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let todo of todos">
+        <td>{{ todo.todoName }}</td>
+        <td>{{ todo.description }}</td>
+        <td>{{ todo.visible ? "Sí" : "No" }}</td>
+        <td>{{ todo.dueDate | date : "short" }}</td>
+        <td>{{ todo.priority }}</td>
+        <td>
+          <button (click)="edit(todo)">Editar</button>
+          <button (click)="delete(todo.id!)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
 <ng-template #noAccess>
   <div class="card">
     <h2>Acceso denegado</h2>
